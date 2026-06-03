@@ -7,8 +7,7 @@ export interface IAssignment extends Document {
   gradeLevel: string;
   dueDate: Date;
   questionTypes: string[];
-  totalQuestions: number;
-  totalMarks: number;
+  totalQuestions: number;  totalMarks: number;
   additionalInstructions?: string;
   uploadedFileContent?: string;
   duration?: string;

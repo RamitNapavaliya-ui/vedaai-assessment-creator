@@ -38,7 +38,7 @@ export interface AssignmentInput {
   subject: string;
   gradeLevel: string;
   dueDate: string;
-  questionTypes: QuestionType[];
+  questionTypes: string[];
   totalQuestions: number;
   totalMarks: number;
   additionalInstructions?: string;

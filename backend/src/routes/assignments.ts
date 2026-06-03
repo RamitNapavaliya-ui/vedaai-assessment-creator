@@ -87,6 +87,8 @@ router.post('/', upload.single('file'), validateAssignment,
         });
       }
 
+      const typedQuestionTypes = questionTypes as AssignmentInput['questionTypes'];
+
       const assignment = await Assignment.create({
         title: b.title, subject: b.subject, gradeLevel: b.gradeLevel,
         dueDate: new Date(b.dueDate), questionTypes,
@@ -99,7 +101,7 @@ router.post('/', upload.single('file'), validateAssignment,
 
       const input: AssignmentInput = {
         title: b.title, subject: b.subject, gradeLevel: b.gradeLevel,
-        dueDate: b.dueDate, questionTypes,
+        dueDate: b.dueDate, questionTypes: questionTypes as any,
         totalQuestions: parseInt(b.totalQuestions),
         totalMarks: parseInt(b.totalMarks),
         additionalInstructions: b.additionalInstructions,
