@@ -2,9 +2,14 @@ import OpenAI from 'openai';
 import { AssignmentInput, GeneratedPaper, Section, Question, QuestionType, Difficulty } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy client — only created when actually used, so missing key doesn't crash startup
+let _openai: OpenAI | null = null;
+function getOpenAIClient(): OpenAI {
+  if (!_openai) {
+    _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return _openai;
+}
 
 function buildPrompt(input: AssignmentInput): string {
   const questionTypesFormatted = input.questionTypes.join(', ');
@@ -127,7 +132,7 @@ function validateDifficulty(diff: string): Difficulty {
 export async function generateAssessment(input: AssignmentInput): Promise<GeneratedPaper> {
   const prompt = buildPrompt(input);
 
-  const response = await openai.chat.completions.create({
+  const response = await getOpenAIClient().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       {
