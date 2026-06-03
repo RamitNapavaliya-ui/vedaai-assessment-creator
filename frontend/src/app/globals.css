@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #0f0f13;
+  color: #f8fafc;
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl;
+  }
+
+  .glass-card-solid {
+    @apply bg-slate-900 border border-slate-800 rounded-2xl;
+  }
+
+  .input-field {
+    @apply w-full bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 
+           focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 
+           transition-all duration-200 text-sm;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-500 text-white font-semibold px-6 py-3 rounded-xl 
+           transition-all duration-200 flex items-center gap-2 disabled:opacity-50 
+           disabled:cursor-not-allowed shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply bg-slate-800 hover:bg-slate-700 text-white font-medium px-5 py-2.5 rounded-xl 
+           transition-all duration-200 flex items-center gap-2 border border-slate-700 
+           hover:border-slate-600;
+  }
+
+  .btn-danger {
+    @apply bg-red-900/30 hover:bg-red-900/50 text-red-400 font-medium px-5 py-2.5 rounded-xl 
+           transition-all duration-200 flex items-center gap-2 border border-red-900/50;
+  }
+
+  .section-header {
+    @apply text-lg font-bold text-white mb-4 flex items-center gap-2;
+  }
+
+  .difficulty-easy {
+    @apply bg-emerald-500/15 text-emerald-400 border border-emerald-500/30;
+  }
+
+  .difficulty-medium {
+    @apply bg-amber-500/15 text-amber-400 border border-amber-500/30;
+  }
+
+  .difficulty-hard {
+    @apply bg-rose-500/15 text-rose-400 border border-rose-500/30;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1e1e2a;
+}
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Progress bar animation */
+@keyframes progress-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.progress-animate {
+  animation: progress-pulse 1.5s ease-in-out infinite;
+}

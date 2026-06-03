@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: vedaai-mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: vedaai-redis
+    ports:
+      - '6379:6379'
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vedaai-backend
+    ports:
+      - '4000:4000'
+    environment:
+      - PORT=4000
+      - MONGODB_URI=mongodb://mongodb:27017/vedaai
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - FRONTEND_URL=http://localhost:3000
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.worker
+    container_name: vedaai-worker
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/vedaai
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - redis
+      - backend
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vedaai-frontend
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NEXT_PUBLIC_WS_URL=ws://localhost:4000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  redis_data:
