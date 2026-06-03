@@ -89,7 +89,7 @@ export default function CreatePage() {
   });
 
   const handleBlur = (field: string) => {
-    setTouched((prev) => new Set([...prev, field]));
+    setTouched((prev) => new Set(Array.from(prev).concat(field)));
     const errs = validateForm(form);
     setErrors(errs);
   };
@@ -101,7 +101,7 @@ export default function CreatePage() {
     } else {
       setFormField('questionTypes', [...current, type]);
     }
-    setTouched((prev) => new Set([...prev, 'questionTypes']));
+    setTouched((prev) => new Set(Array.from(prev).concat('questionTypes')));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
